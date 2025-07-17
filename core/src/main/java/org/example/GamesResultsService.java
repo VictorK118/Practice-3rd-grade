@@ -51,4 +51,16 @@ public class GamesResultsService {
                 .collect(Collectors.groupingBy((Map.Entry::getKey),
                         Collectors.mapping(Map.Entry::getValue, Collectors.toSet())));
     }
+
+    public static Map<Team, Integer> getGoalDifference(List<GameResult> results) {
+        return results.stream()
+                .flatMap(game -> Stream.of(
+                        Map.entry(game.homeTeam(), game.homeTeamGoals() - game.awayTeamGoals()),
+                        Map.entry(game.awayTeam(), game.awayTeamGoals() - game.homeTeamGoals())
+                ))
+                .collect(Collectors.groupingBy(
+                        Map.Entry::getKey,
+                        Collectors.summingInt(Map.Entry::getValue)
+                ));
+    }
 }
