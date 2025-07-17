@@ -38,4 +38,17 @@ public class GamesResultsService {
                 .map(GameResult::homeTeam)
                 .collect(Collectors.toSet());
     }
+
+    public static Map<Team, Set<Team>> getTeamsWithDefeatedTeams(List<GameResult> gamesResults) {
+        return gamesResults.stream()
+                .filter(gameResult -> gameResult.awayTeamGoals() != gameResult.homeTeamGoals())
+                .flatMap(gameResult -> {
+                    if (gameResult.homeTeamGoals() > gameResult.awayTeamGoals()) {
+                        return Stream.of(new AbstractMap.SimpleEntry<>(gameResult.homeTeam(), gameResult.awayTeam()));
+                    }
+                    return Stream.of(new AbstractMap.SimpleEntry<>(gameResult.awayTeam(), gameResult.homeTeam()));
+                })
+                .collect(Collectors.groupingBy((Map.Entry::getKey),
+                        Collectors.mapping(Map.Entry::getValue, Collectors.toSet())));
+    }
 }
