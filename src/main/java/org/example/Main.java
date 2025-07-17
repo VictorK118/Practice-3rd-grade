@@ -30,6 +30,8 @@ public class Main {
             System.out.println(GamesResultsService.getTopThree(gamesResults));
             System.out.println("Команды, не пропустившие ни одного мяча в домашнем матче");
             System.out.println(GamesResultsService.getHomeTeamsWithoutAwayGoals(gamesResults));
+            System.out.println("Список побеждённых команд для каждой команды ");
+            System.out.println(GamesResultsService.getTeamsWithDefeatedTeams(gamesResults));
 
             GamesResultsFileController.writeToFile(FILE_PATH, gamesResults);
         } catch (IOException | IllegalArgumentException | NullPointerException e) {
