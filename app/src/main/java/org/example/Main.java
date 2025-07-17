@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Main {
-    public static final String FILE_PATH = "../resources/data/file.txt";
+    public static final String FILE_PATH = "app/src/main/resources/data/file.txt";
     private static final Logger logger = Logger.getLogger(GamesResultsFileController.class.getName());
 
     public static void main(String[] args) throws IOException {
