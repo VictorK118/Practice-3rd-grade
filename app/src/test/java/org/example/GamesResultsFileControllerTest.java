@@ -2,10 +2,13 @@ package org.example;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.MockedConstruction;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,5 +47,23 @@ class GamesResultsFileControllerTest {
 
             verify(mockReader, times(2)).readLine();
         }
+    }
+
+
+    @Test
+    void writeToFile_ShouldWriteCorrectFormat(@TempDir Path tempDir) throws IOException {
+        // Arrange
+        Path testFile = tempDir.resolve("output.txt");
+        List<GameResult> testResults = List.of(
+                new GameResult(Team.ROOK, Team.KAZAN_YULBARS, 2, 1),
+                new GameResult(Team.SPORT_UFU, Team.BERKUT, 0, 0)
+        );
+
+        GamesResultsFileController.writeToFile(testFile.toString(), testResults);
+
+        List<String> lines = Files.readAllLines(testFile);
+        assertEquals(2, lines.size(), "Файл должен содержать 2 строки");
+        assertEquals("ROOK;KAZAN_YULBARS;2:1", lines.get(0), "Неверный формат первой строки");
+        assertEquals("SPORT_UFU;BERKUT;0:0", lines.get(1), "Неверный формат второй строки");
     }
 }
